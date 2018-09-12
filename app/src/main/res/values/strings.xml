@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">shelter</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Home and Account -->
+    <string name="search">Search Here</string>
+    <string name="camera">open the camera</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name of the person</string>
+    <string name="address">Type the address here</string>
+    <string name="city">Write the city and state</string>
+    <!-- ABOUT -->
+    <string name="about_text">هنا سوف نضع فقرة تتحدّث عن الهدف الإنساني الذي من أجله قمنا بإنشاء هذا التّطبيق</string>
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="donate">Donate</string>
+    <!-- Navigation drawer -->
+    <string name="shelter">Shelter ملجأ</string>
+    <string name="mail">shelter.new.life@gmail.com</string>
+    <string name="home">Home</string>
+    <string name="account">Account</string>
+    <string name="faq">FAQ</string>
+    <string name="charitable">Charitable organizations</string>
+    <string name="supporting">US SUPPORTING</string>
+    <string name="developers">Developers</string>
+    <string name="communicate">Communicate</string>
+    <string name="share">Share</string>
+    <string name="rate">Rate us</string>
+    <!-- Rate -->
+    <string name="rate_app">Rate this app</string>
+    <string name="rate_text">if you enjoy using this app , would you mind taking amoment to rate it ? it won’t take more than a minute . Thank you for your supprt !</string>
+    <string name="rate_now">RATE NOW</string>
+    <string name="later">LATER</string>
+    <string name="no_thanks">NO , THANKS</string>
+    <!-- Login and Register -->
+    <string name="email">Put your email here</string>
+    <string name="password">Type the password</string>
+    <string name="forgot_password">Forgot your password ?</string>
+    <string name="login">Login</string>
+    <string name="register">Sing up</string>
+
+
+</resources>

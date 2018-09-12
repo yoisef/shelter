@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.life.shelter.people.homeless">
+
+    <!-- Include required permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".home"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    <activity android:name=".Databeas.UsersAccount"/>
+        <activity
+            android:name=".Login"
+            android:label="Login"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+        <activity
+            android:name=".Account"
+            android:label="Account"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+        <activity
+            android:name=".About"
+            android:label="About"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+        <activity
+            android:name=".Developers"
+            android:label="Developers"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+        <activity
+            android:name=".CharitableOrganizations"
+            android:label="Charitable Organizations"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+        <activity
+            android:name=".Register"
+            android:label="Register"
+            android:parentActivityName=".home"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home" />
+
+
+        <activity android:name=".FAQ"
+            android:label="FAQ"
+            android:parentActivityName=".home" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+
+
+        <activity android:name=".Supporting"
+            android:label="US SUPPORTING"
+            android:parentActivityName=".home" >
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
+    </activity>
+    </application>
+
+</manifest>

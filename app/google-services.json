@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "813620691664",
+    "firebase_url": "https://shelter-484f1.firebaseio.com",
+    "project_id": "shelter-484f1",
+    "storage_bucket": "shelter-484f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813620691664:android:ddb6d637febe5b8a",
+        "android_client_info": {
+          "package_name": "com.life.shelter.people.homeless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813620691664-9d7qcm4jri0fmpebd3mmba2r3j7gj64k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.life.shelter.people.homeless",
+            "certificate_hash": "77c0aafe38c92b0f42316bb5a154b1cd8939573a"
+          }
+        },
+        {
+          "client_id": "813620691664-1soc5c90uokl15j3df63rok5tglkdk8o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmUHnES8n4QFqXBVDVOHt3BJCOmUFuRZk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813620691664-1soc5c90uokl15j3df63rok5tglkdk8o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

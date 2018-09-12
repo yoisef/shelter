@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="200dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/homimg"
+                android:layout_width="110dp"
+                android:layout_height="130dp"
+                android:src="@drawable/user"
+                app:civ_border_color="#ffff"
+                app:civ_border_width="2dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Upload Photo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/lisItemTextStyle"
+             android:hint="@string/name"
+                android:id="@+id/homname"
+                android:textStyle="bold"
+                android:textSize="20sp"
+
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#000"/>
+
+            <TextView
+                style="@style/lisItemTextStyle"
+                android:textSize="20sp"
+                android:id="@+id/homeaddress"
+               android:hint="@string/address"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                style="@style/lisItemTextStyle"
+                android:textSize="20sp"
+
+                android:id="@+id/homecity"
+               android:hint="@string/city"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/colorPrimary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/facebook"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/facebook"
+                    android:text="@string/facebook" />
+
+                <ImageButton
+                    android:id="@+id/twitter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/twitter"
+                    android:text="@string/twitter" />
+
+                <ImageButton
+                    android:id="@+id/email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/email_1"
+                    android:text="@string/email" />
+
+                <ImageButton
+                    android:id="@+id/donate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/donate"
+                    android:text="@string/donate" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+
+        android:layout_height="1dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="@color/colorPrimary"/>
+
+</LinearLayout>
