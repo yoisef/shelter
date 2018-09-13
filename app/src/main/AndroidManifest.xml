@@ -18,6 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fb_app_id"/>
         <activity
             android:name=".home"
             android:label="@string/app_name"
@@ -29,6 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider279363979553079"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
     <activity android:name=".Databeas.UsersAccount"/>
         <activity
             android:name=".Login"

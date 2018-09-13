@@ -3,6 +3,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="fb_app_id">279363979553079</string>
+    <string name="fb_login_protocol">fb279363979553079</string>
 
     <string name="action_settings">Settings</string>
 
