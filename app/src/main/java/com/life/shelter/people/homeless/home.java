@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -23,14 +26,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
+import com.life.shelter.people.homeless.recycleadapter.listadapter;
 import com.squareup.picasso.Picasso;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
 public class home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    RecyclerView mylist;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,18 @@ public class home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mylist=findViewById(R.id.listhomelessinfo);
+        mylist.setHasFixedSize(true);
+        mLayoutManager=new LinearLayoutManager(this);
+        mylist.setLayoutManager(mLayoutManager);
+        mylist.setAdapter(new listadapter(this));
+
+        if(Build.VERSION.SDK_INT>22){
+            requestPermissions(new String[] {WRITE_EXTERNAL_STORAGE}, 1);
+            requestPermissions(new String[] {READ_EXTERNAL_STORAGE}, 1);
+
+        }
     }
 
     public void printhasjkey()

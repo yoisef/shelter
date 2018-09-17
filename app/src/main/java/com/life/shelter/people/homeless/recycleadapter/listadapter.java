@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +43,14 @@ import com.life.shelter.people.homeless.Databeas.Product;
 import com.life.shelter.people.homeless.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -183,10 +194,98 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
             }
         });
 
+        holder.tw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = holder.getAdapterPosition();
+
+                if (mylist.get(pos).getDownloadimgurl()!=null) {
+                    new DownloadImage().execute(mylist.get(pos).getDownloadimgurl());
+                    File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File file = new File(path, "DemoPicture.jpg");
+                    String imageFullPath = file.getAbsolutePath();
+
+                    TweetComposer.Builder builder = new TweetComposer.Builder(context)
+                            .text("حالة تحتاج الي مساعدة" + "\n"
+                                    + mylist.get(pos).getName()+ "\n"
+                                    + mylist.get(pos).getAddress() + "\n"
+                                    + mylist.get(pos).getCity())//any sharing text here
+                            .image(Uri.parse(imageFullPath));
+                    builder.show();
+
+                } else {
+
+                    String tweetUrl = "https://twitter.com/intent/tweet?text="
+                            + "حالة تحتاج الي مساعدة" + "\n"
+                            + mylist.get(pos).getName()+ "\n"
+                            + mylist.get(pos).getAddress()+ "\n"
+                            + mylist.get(pos).getCity()+ "\n"
+                            + "&url="
+                            + Uri.parse("https://goo.gl/images/Ajo63W");
+                    Uri uri = Uri.parse(tweetUrl);
+                    context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+
+                }
+            }
+        });
 
     }
 
+    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+        private String TAG = "DownloadImage";
+        private Bitmap downloadImageBitmap(String sUrl) {
+            Bitmap bitmap = null;
+            try {
+                InputStream inputStream = new URL(sUrl).openStream();   // Download Image from URL
+                bitmap = BitmapFactory.decodeStream(inputStream);       // Decode Bitmap
+                inputStream.close();
+            } catch (Exception e) {
+                //Log.d(TAG, "Exception 1, Something went wrong!");
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
 
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return downloadImageBitmap(params[0]);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            //Toast.makeText(context, "onPostExecute", Toast.LENGTH_SHORT).show();
+            createExternalStoragePrivatePicture(result);
+        }
+    }
+
+
+    void createExternalStoragePrivatePicture(Bitmap b) {
+
+        File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File file = new File(path, "DemoPicture.jpg");
+
+        try {
+            //@SuppressLint("ResourceType") InputStream is = context.getResources().openRawResource(R.drawable.camera);
+            OutputStream os = new FileOutputStream(file);
+            b.compress(Bitmap.CompressFormat.JPEG, 90, os);
+            os.flush();
+            os.close();
+
+            // Tell the media scanner about the new file so that it is
+            // immediately available to the user.
+            MediaScannerConnection.scanFile(context,
+                    new String[] { file.toString() }, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.i("ExternalStorage", "Scanned " + path + ":");
+                            Log.i("ExternalStorage", "-> uri=" + uri);
+                        }
+                    });
+        } catch (IOException e) {
+            // Unable to create file, likely because external storage is
+            // not currently mounted.
+            Log.w("ExternalStorage", "Error writing " + file, e);
+        }
+    }
 
 
 
@@ -213,6 +312,7 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
             address=itemView.findViewById(R.id.homeaddress);
             city=itemView.findViewById(R.id.homecity);
             fb=itemView.findViewById(R.id.facebook);
+            tw=itemView.findViewById(R.id.twitter);
 
         }
     }
