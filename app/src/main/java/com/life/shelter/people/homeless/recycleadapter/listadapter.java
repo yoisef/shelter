@@ -257,6 +257,21 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
                         context.startActivity(emailIntent);
                     }
 //                    context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }else{
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    emailIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
+
+                    emailIntent.setType("image/*");
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "حالة تحتاج الي مساعدة");
+                    // + "\n\r" + "\n\r" +
+                    // feed.get(Selectedposition).DETAIL_OBJECT.IMG_URL
+                    emailIntent.putExtra(Intent.EXTRA_TEXT,  mylist.get(pos).getName()+ "\n"
+                            + mylist.get(pos).getAddress()+ "\n"
+                            + mylist.get(pos).getCity());
+                    if (emailIntent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(emailIntent);
+                    }
                 }
             }
         });
