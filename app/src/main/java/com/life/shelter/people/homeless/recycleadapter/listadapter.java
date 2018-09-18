@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -229,6 +230,37 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
             }
         });
 
+        holder.email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = holder.getAdapterPosition();
+
+                if (mylist.get(pos).getDownloadimgurl()!=null) {
+                    new DownloadImage().execute(mylist.get(pos).getDownloadimgurl());
+                    File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File file = new File(path, "DemoPicture.jpg");
+                    Uri photoURI = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    emailIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
+
+                    emailIntent.setType("image/*");
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "حالة تحتاج الي مساعدة");
+                    // + "\n\r" + "\n\r" +
+                    // feed.get(Selectedposition).DETAIL_OBJECT.IMG_URL
+                    emailIntent.putExtra(Intent.EXTRA_TEXT,  mylist.get(pos).getName()+ "\n"
+                            + mylist.get(pos).getAddress()+ "\n"
+                            + mylist.get(pos).getCity());
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+                    if (emailIntent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(emailIntent);
+                    }
+//                    context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }
+            }
+        });
+
     }
 
     private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
@@ -313,6 +345,7 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
             city=itemView.findViewById(R.id.homecity);
             fb=itemView.findViewById(R.id.facebook);
             tw=itemView.findViewById(R.id.twitter);
+            email=itemView.findViewById(R.id.email);
 
         }
     }
