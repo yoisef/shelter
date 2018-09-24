@@ -31,12 +31,12 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"/>
 
-    <android.support.v7.widget.SearchView
+    <SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:queryHint="@string/search"
-        app:iconifiedByDefault="false" />
+        android:hint="@string/search"
+         />
 
 
 

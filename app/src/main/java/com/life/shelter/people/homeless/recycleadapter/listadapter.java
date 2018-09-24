@@ -41,6 +41,7 @@ import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +51,7 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference reference = database.getReference();
     ArrayList<Product> mylist = new ArrayList<>();
+    ArrayList<Product> listnew;
     ShareDialog shareDialog;
     Target target;
     CallbackManager callbackManager;
@@ -96,6 +98,16 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
 
 
 
+
+    }
+
+    public ArrayList<Product> getmylist()
+    {
+       return this.mylist;
+    }
+    public void setmylist(ArrayList<Product> se)
+    {
+        this.mylist=se;
 
     }
 
@@ -195,7 +207,10 @@ public class listadapter extends RecyclerView.Adapter<listadapter.viewholder> {
         return mylist.size();
     }
 
-    public static void activityResult(int requestCode, int resultCode, Intent data){
+
+
+
+        public static void activityResult(int requestCode, int resultCode, Intent data){
 
         //right your code here .
     }
