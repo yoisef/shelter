@@ -47,6 +47,8 @@
     <string name="forgot_password">Forgot your password ?</string>
     <string name="login">Login</string>
     <string name="register">Sing up</string>
+    <string name="click_string">click_string</string>
+    <string name="buy_string">buy_string</string>
 
 
 </resources>
