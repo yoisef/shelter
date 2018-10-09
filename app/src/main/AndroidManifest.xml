@@ -3,15 +3,14 @@
     package="com.life.shelter.people.homeless">
 
     <!-- Include required permissions -->
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-feature android:name="android.hardware.camera"
-        android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -20,8 +19,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/fb_app_id"/>
         <activity
             android:name=".home"
             android:label="@string/app_name"
@@ -33,13 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <provider
-            android:authorities="com.facebook.app.FacebookContentProvider279363979553079"
-            android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
-
-    <activity android:name=".Databeas.UsersAccount"/>
         <activity
             android:name=".Login"
             android:label="Login"
@@ -88,13 +78,14 @@
         <activity
             android:name=".Register"
             android:label="Register"
-            android:parentActivityName=".home"/>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".home" />
+            android:parentActivityName=".home" />
 
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".home" />
 
-        <activity android:name=".FAQ"
+        <activity
+            android:name=".FAQ"
             android:label="FAQ"
             android:parentActivityName=".home" />
 
@@ -102,26 +93,31 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".home" />
 
-
-        <activity android:name=".Supporting"
+        <activity
+            android:name=".Supporting"
             android:label="US SUPPORTING"
-            android:parentActivityName=".home" >
-
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".home" />
-    </activity>
-
-        <provider
-            android:name=".GenericFileProvider"
-            android:authorities="${applicationId}.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
+            android:parentActivityName=".home">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home" />
+        </activity>
+        <activity android:name=".trampdata" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".userwork" />
+        <activity android:name=".displayOrganizations" />
 
+        <!-- Firebase message -->
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- Firebase message -->
+        <activity android:name=".trampPhotoActivity" />
+        <activity
+            android:name=".EditDataActivity"
+            android:label="Edit" />
+        <activity android:name=".organizationhome"></activity>
     </application>
 
 </manifest>

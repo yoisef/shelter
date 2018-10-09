@@ -1,79 +1,118 @@
 package com.life.shelter.people.homeless;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.life.shelter.people.homeless.Databeas.UsersAccount;
-import com.life.shelter.people.homeless.recycleadapter.listadapter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Account extends AppCompatActivity {
-
-
-    ImageView uploadphoto;
-    private static final int image = 101;
-    Uri uriprofileimage,myuri;
-    String downloadedurl;
-    ProgressBar progressBar;
-    RecyclerView mylist;
-    private RecyclerView.LayoutManager mLayoutManager;
-
+    private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+    private DatabaseReference databaseTramp;
+    private DatabaseReference databaseReg;
+    String type, country;
+    ListView listViewTrampA;
+    List<HomeFirebaseClass> trampList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        uploadphoto=findViewById(R.id.takepic);
-        progressBar=findViewById(R.id.myprogressbar);
-        mylist=findViewById(R.id.listhomelesinform);
-        mylist.setHasFixedSize(true);
+        mAuth = FirebaseAuth.getInstance();
 
 
-        mLayoutManager=new LinearLayoutManager(this);
-        mylist.setLayoutManager(mLayoutManager);
-        mylist.setAdapter(new listadapter(this));
+        databaseTramp = FirebaseDatabase.getInstance().getReference("trampoos");
+        mStorageRef = FirebaseStorage.getInstance().getReference("trrrrr");
+
+        listViewTrampA = (ListView) findViewById(R.id.list_view_tramp_count);
+        trampList = new ArrayList<>();
 
 
-
-        uploadphoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(Account.this, UsersAccount.class));
-
-            }
-        });
     }
 
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getRegData();
 
-         /*   } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni != null) {
+            return true;
+        } else {
+            return false;
         }
     }
-*/
+    private void getRegData() {
+////import data of country and tope
+        databaseReg = FirebaseDatabase.getInstance().getReference("reg_data");
 
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                type = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("ctype").getValue(String.class);
+                country = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("ccountry").getValue(String.class);
+                maketable();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        };
+        databaseReg.addValueEventListener(postListener);
+    }
+    private void maketable() {
+
+                if (isNetworkConnected()) {
+                    if (country != null && type != null) {
+                        databaseTramp.child(country).child(type).child("users").child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                trampList.clear();
+
+                                for (DataSnapshot acountSnapshot : dataSnapshot.getChildren()) {
+                                    HomeFirebaseClass homeTramp = acountSnapshot.getValue(HomeFirebaseClass.class);
+                                    trampList.add(0, homeTramp);
+
+
+                                }
+                                TrampHomeAdapter adaptera = new TrampHomeAdapter(Account.this, trampList);
+                                listViewTrampA.setAdapter(adaptera);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(Account.this, "please check the network connection", Toast.LENGTH_LONG).show();
+                }
+
+    }
 }

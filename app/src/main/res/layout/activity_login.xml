@@ -24,7 +24,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/logo"
-        android:layout_marginTop="120dp"
         android:gravity="center"
         android:text="Login"
         android:textColor="#fff"
@@ -53,15 +52,16 @@
                 android:paddingLeft="10dp"/>
 
             <custom_font.MyEditText
+                android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="#00000000"
                 android:drawablePadding="10dp"
-
                 android:hint="Email"
                 android:paddingLeft="10dp"
-
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:textColor="#fff"
                 android:textColorHint="#fff"
                 android:textSize="13dp" />
@@ -88,6 +88,7 @@
 
 
             <custom_font.MyEditText
+                android:id="@+id/edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#00000000"
@@ -116,6 +117,7 @@
             android:text="Login"
             android:textColor="#fff"
             android:textStyle="bold" />
+        
 
         <LinearLayout
             android:id="@+id/bottom"
@@ -133,6 +135,7 @@
                 android:text="Create Account"
                 android:textColor="#FFF"/>
             <custom_font.MyTextView
+                android:id="@+id/forget"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,5 +146,12 @@
 
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>
 

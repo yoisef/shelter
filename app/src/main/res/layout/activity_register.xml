@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
     tools:context="com.life.shelter.people.homeless.Register">
+    <RelativeLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ImageView
         android:id="@+id/logo"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"/>
 
     <custom_font.MyTextView
         android:id="@+id/title_reister"
@@ -33,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_below="@id/title_reister"
         android:layout_alignParentBottom="true">
 
         <LinearLayout
@@ -51,6 +55,7 @@
                 android:layout_gravity="center"
                 android:paddingLeft="10dp"/>
             <custom_font.MyEditText
+                android:id="@+id/edit_email"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -59,7 +64,8 @@
                 android:letterSpacing="0.1"
                 android:hint="Email Address"
                 android:textColor="#fff"
-
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:textColorHint="#fff"
                 android:drawablePadding="10dp"
                 android:textSize="13dp"
@@ -82,6 +88,7 @@
                 android:layout_gravity="center"
                 android:paddingLeft="10dp"/>
             <custom_font.MyEditText
+                android:id="@+id/edit_password"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -118,6 +125,7 @@
 
 
             <custom_font.MyEditText
+                android:id="@+id/edit_c_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#00000000"
@@ -130,7 +138,26 @@
                 android:letterSpacing="0.1"
                 android:layout_weight="1"
                 />
+
         </LinearLayout>
+        <Spinner
+            android:id="@+id/spinner_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:spinnerMode="dropdown"
+            android:textAlignment="center"
+            android:textColor="#e40f0f" />
+        <Spinner
+            android:id="@+id/spinner_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
+            android:spinnerMode="dropdown"
+            android:textAlignment="center"
+            android:textColor="#e40f0f" />
         <custom_font.MyTextView
             android:id="@+id/getstarted"
             android:layout_width="match_parent"
@@ -166,4 +193,13 @@
 
 
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>
+</ScrollView>
+

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/close_button_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginStart="300dp"
+        android:layout_marginBottom="30dp"
+        style="?android:attr/buttonBarButtonStyle"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="X" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/edit_button_dialog"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:background="@drawable/button_round_blue"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:text="Edit"/>
+
+        <Button
+            android:id="@+id/delete_button_dialog"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            style="?android:attr/buttonBarButtonStyle"
+            android:background="@drawable/button_round_red"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:text="Delete"/>
+    </LinearLayout>
+
+</LinearLayout>

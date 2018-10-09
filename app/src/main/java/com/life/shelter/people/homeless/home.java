@@ -1,75 +1,65 @@
 package com.life.shelter.people.homeless;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.os.Build;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-<<<<<<< HEAD
-import android.text.Editable;
-import android.text.TextWatcher;
-=======
->>>>>>> 3e9189e4bae020362d99ead6361c585f7fce3bca
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.life.shelter.people.homeless.Databeas.Product;
-=======
->>>>>>> 3e9189e4bae020362d99ead6361c585f7fce3bca
-import com.life.shelter.people.homeless.recycleadapter.listadapter;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.life.shelter.people.homeless.util.IabHelper;
+import com.life.shelter.people.homeless.util.IabResult;
+import com.life.shelter.people.homeless.util.Inventory;
+import com.life.shelter.people.homeless.util.Purchase;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Locale;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
+import java.util.List;
+import java.util.Random;
 
 public class home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-<<<<<<< HEAD
-    RecyclerView serchrecycle;
-    RecyclerView.LayoutManager mLayoutManager;
-    EditText serchesit ;
-    listadapter myadapter;
+    private FirebaseAuth mAuth;
+    private StorageReference mStorageRef;
+    private DatabaseReference databaseTramp;
+    private DatabaseReference databaseReg;
+    String type,country;
+    ListView listViewTramp;
     SearchView searchView;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference reference = database.getReference();
-    ArrayList<Product> mylistfinal;
-
-=======
-    RecyclerView mylist;
-    private RecyclerView.LayoutManager mLayoutManager;
->>>>>>> 3e9189e4bae020362d99ead6361c585f7fce3bca
+    Button addTrampButton;
+    private ProgressBar progressBar;
+    List<HomeFirebaseClass> trampList;
+    //-------------------التبرع--------------------------
+    private static final String TAG = "InAppBilling";
+    IabHelper mHelper;
+    static final String ITEM_SKU = "com.salim3dd.btnclickme";//القيمة هنا تتغير مثل حساب المطور
+    //--------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,97 +67,65 @@ public class home extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        addTrampButton = (Button) findViewById(R.id.add_tramp_h);
+        progressBar = (ProgressBar) findViewById(R.id.home_progress_bar);
+        mAuth = FirebaseAuth.getInstance();
 
-        mylistfinal=new ArrayList<>();
+        databaseTramp = FirebaseDatabase.getInstance().getReference("homedb");
+        databaseReg = FirebaseDatabase.getInstance().getReference("reg_data");
+        mStorageRef = FirebaseStorage.getInstance().getReference("trrrrr");
+        listViewTramp= (ListView)findViewById(R.id.list_view_tramp);
+        searchView = (SearchView) findViewById(R.id.search);
+        trampList=new ArrayList<>();
+        listViewTramp.setTextFilterEnabled(true);
+        removeFocus();
+        //--------------------------------التبرع---------------------------------
+      //  TrampHomeAdapter adapter = new TrampHomeAdapter(home.this, trampList);
+    // final ImageView aDonateLogo = (ImageView) listViewTramp.findViewById(R.id.donate);
+        ImageView  aDonateLogo = (ImageView) findViewById(R.id.donate);
+        String base64EncodedPublicKey =
+                "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhW5Q0OlZ9BW3rtylifmWcLabwamc/ztz8PfrxFttxoO44gynEigZbZgczvjz2uNqjtoGMK1I83nxPH7+qZnwyOY5ih9M6o/8MicnKd6yq2/4NwLD1eQxNr9E0J0RT00mj8JWiPGrwO3rDGu61s4o99CdaJRdRVzjnY/QNs0H2idXT12cbGdnIia8OEWQvE+SuHV6QN4Ofdu/drus/REnIHNPiXyZAlXmwezrQxatL6xJ95jJnTZtG1WlDsvbvAKQsHkRFAVLJFTzflgzYkMeujjDO+gIlBQ/iUHlkKg24TBWXRZAOinSlxLN2/zEd3ERJ8ex0pCIvJkgAI3aVcF74QIDAQAB";
+///القيمة هنا تتغير مثل حساب المطور
+        mHelper =  new IabHelper(this,base64EncodedPublicKey);
 
-
-        myadapter=new listadapter(this);
-
-        reference.child("shelter").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Product info = dataSnapshot.getValue(Product.class);
-                mylistfinal.add(info);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d(TAG, "In-app Billing setup failed: " +
+                            result);
+                } else {
+                    Log.d(TAG, "In-app Billing is set up OK");
+                }
             }
         });
 
+        //----------------------------------------------------------------------
+        //Add to Activity
+        FirebaseMessaging.getInstance().subscribeToTopic("pushNotifications");
 
-        printhasjkey();
-        serchrecycle=findViewById(R.id.listhomelessinfo);
-        searchView =  findViewById(R.id.search); // inititate a search view
-        CharSequence query = searchView.getQuery();
-        searchView.setQueryHint("Search for homeless by city");
-      //  boolean isIconfied=searchView.isIconfiedByDefault();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        addTrampButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                String text = newText;
-             final   ArrayList<Product> example= mylistfinal;
-               ArrayList<Product> example2=new ArrayList<>();
-
-                    text = text.toLowerCase(Locale.getDefault());
-
-                    if (text.length()==0)
-                    {
-                        myadapter.setmylist(example);
-                        myadapter.notifyDataSetChanged();
-
-                    }
-
-                  else {
-                        for (Product wp : example) {
-                            if (wp.getCity().toLowerCase(Locale.getDefault()).contains(text)) {
-                                example2.add(wp);
-
-                            }
-                            myadapter.setmylist(example2);
-                            myadapter.notifyDataSetChanged();
-                        }
-                    }
-                  //  myadapter.notifyDataSetChanged();
-
-
-
-                return false;
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent it = new Intent(home.this, trampdata.class);
+                startActivity(it);
             }
         });
 
-        serchrecycle.setHasFixedSize(true);
+        //pour cela, on commence par regarder si on a déjà des éléments sauvegardés
+        aDonateLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Random Rand = new Random();
 
+                int Rndnum = Rand.nextInt(10000) + 1;
+                mHelper.launchPurchaseFlow(home.this, ITEM_SKU, 10001,
+                        mPurchaseFinishedListener, "token-" + Rndnum);
+            }
+        });
 
-        mLayoutManager=new LinearLayoutManager(this);
-        serchrecycle.setLayoutManager(mLayoutManager);
-        serchrecycle.setAdapter(myadapter);
-
-
+///////////////////////////////////////////////////////////
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -178,37 +136,16 @@ public class home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mylist=findViewById(R.id.listhomelessinfo);
-        mylist.setHasFixedSize(true);
-        mLayoutManager=new LinearLayoutManager(this);
-        mylist.setLayoutManager(mLayoutManager);
-        mylist.setAdapter(new listadapter(this));
-
-        if(Build.VERSION.SDK_INT>22){
-            requestPermissions(new String[] {WRITE_EXTERNAL_STORAGE}, 1);
-            requestPermissions(new String[] {READ_EXTERNAL_STORAGE}, 1);
-
-        }
+        ////////////////////////////////////////////////////////////
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressBar.setVisibility(View.VISIBLE);
+        getRegData();
     }
 
-
-    public void printhasjkey()
-    {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.life.shelter.people.homeless",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
 
     @Override
     public void onBackPressed() {
@@ -219,7 +156,6 @@ public class home extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -254,16 +190,219 @@ public class home extends AppCompatActivity
             startActivity(it);
         } else if (id == R.id.nav_share) {
 
+        } else if (id == R.id.nav_org) {
+            Intent it = new Intent(home.this, displayOrganizations.class);
+            startActivity(it);
+
         } else if (id == R.id.nav_rate) {
 
+        }else if (id == R.id.nav_profile) {
+            Intent it = new Intent(home.this, ProfileActivity.class);
+            startActivity(it);
 
 
+        }else if (id == R.id.nav_out) {
+            mAuth.getInstance().signOut();
+            Intent it = new Intent(home.this, Login.class);
+            it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            finish();
+            startActivity(it);
+        }
+        else if (id == R.id.aDonate) {
+            Random Rand = new Random();
+
+            int Rndnum = Rand.nextInt(10000) + 1;
+            mHelper.launchPurchaseFlow(home.this, ITEM_SKU, 10001,
+                    mPurchaseFinishedListener, "token-" + Rndnum);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+////////////////////////////////////////////////////////////////////////
+private boolean isNetworkConnected() {
+    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo ni = cm.getActiveNetworkInfo();
+    if (ni != null) {
+        return true;
+    } else {
+        return false;
+    }
+}
+    private void getRegData() {
 
+
+    ////import data of country and tope
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                type = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("ctype").getValue(String.class);
+                country = dataSnapshot.child(mAuth.getCurrentUser().getUid()).child("ccountry").getValue(String.class);
+                maketable();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        };
+        databaseReg .addValueEventListener(postListener);
 
     }
+    private void maketable() {
+
+        if (isNetworkConnected()) {
+            if(country != null &&  type != null) {
+
+
+                if (type.equals("Organization")){
+                    addTrampButton.setVisibility(View.GONE);
+                } else {
+                    addTrampButton.setVisibility(View.VISIBLE);
+                }
+                //databaseTramp.child(country).child("Individiual").child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseTramp.child(country).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        trampList.clear();
+
+                        //for (DataSnapshot userid : dataSnapshot.getChildren()) {
+
+                            //for (DataSnapshot userdataSnapshot : userid.getChildren()) {
+                            for (DataSnapshot userdataSnapshot : dataSnapshot.getChildren()) {
+
+                                String cId = userdataSnapshot.child("cId").getValue(String.class);
+                                String hname = userdataSnapshot.child("cName").getValue(String.class);
+                                String haddress = userdataSnapshot.child("cAddress").getValue(String.class);
+                                String hcity = userdataSnapshot.child("cCity").getValue(String.class);
+                                String huri = userdataSnapshot.child("cUri").getValue(String.class);
+                                String huseruri = userdataSnapshot.child("userUri").getValue(String.class);
+                                String husername = userdataSnapshot.child("username").getValue(String.class);
+                                String hpdate = userdataSnapshot.child("pdate").getValue(String.class);
+                                String huserid = userdataSnapshot.child("userId").getValue(String.class);
+                                Boolean checked = userdataSnapshot.child("checked").getValue(Boolean.class);
+                                String organizationId = userdataSnapshot.child("organizationId").getValue(String.class);
+                                String organizationName = userdataSnapshot.child("organizationName").getValue(String.class);
+
+                                HomeFirebaseClass hometramp = new HomeFirebaseClass(cId, hname, haddress, hcity, huri,
+                                        huseruri, husername, hpdate,huserid, checked,organizationId,organizationName);
+                                //trampList.add(hometramp);
+                                trampList.add(0, hometramp);
+                            }
+                           // }
+                        //}
+                        TrampHomeAdapter adapter = new TrampHomeAdapter(home.this, trampList);
+                        //adapter.notifyDataSetChanged();
+                        listViewTramp.setAdapter(adapter);
+                        setupSearchView();
+                        progressBar.setVisibility(View.GONE);
+                       // listViewTramp.setAdapter(adapter);
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+            }
+        } else {
+            Toast.makeText(home.this, "please check the network connection", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void setupSearchView() {
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (TextUtils.isEmpty(newText)) {
+                    listViewTramp.clearTextFilter();
+                } else {
+                    listViewTramp.setFilterText(newText);
+                }
+                return true;
+            }
+        });
+    }
+
+    private void removeFocus() {
+        searchView.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+    }
+    //------------------------التبرع--------------------------
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result,
+                                          Purchase purchase) {
+            if (result.isFailure()) {
+                // Handle error
+                return;
+            } else if (purchase.getSku().equals(ITEM_SKU)) {
+                consumeItem();
+            }
+
+        }
+    };
+    public void consumeItem() {
+        mHelper.queryInventoryAsync(mReceivedInventoryListener);
+    }
+
+    IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener
+            = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result,
+                                             Inventory inventory) {
+
+            if (result.isFailure()) {
+                // Handle failure
+            } else {
+                mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU),
+                        mConsumeFinishedListener);
+            }
+        }
+    };
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener =
+            new IabHelper.OnConsumeFinishedListener() {
+                public void onConsumeFinished(Purchase purchase,
+                                              IabResult result) {
+
+                    if (result.isSuccess()) {
+
+
+                    } else {
+                        // handle error
+                    }
+                }
+            };
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (!mHelper.handleActivityResult(requestCode,
+                resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mHelper != null) mHelper.dispose();
+        mHelper = null;
+    }
+
+//---------------------------------------------
+
+}

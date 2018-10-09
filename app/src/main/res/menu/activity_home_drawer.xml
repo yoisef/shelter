@@ -32,6 +32,14 @@
             android:id="@+id/nav_developers"
             android:icon="@drawable/ic_menu_manage"
             android:title="Developers" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_org"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Homed tramps" />
     </group>
 
     <item android:title="Communicate">
@@ -44,6 +52,26 @@
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Rate us" />
+
+        </menu>
+    </item>
+    <item android:title="Sign out">
+        <menu>
+            <item
+                android:id="@+id/aDonate"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Donate to our support" />
+
+
+        </menu>
+    </item>
+    <item android:title="Sign out">
+        <menu>
+            <item
+                android:id="@+id/nav_out"
+                android:icon="@drawable/ic_menu_out"
+                android:title="Sign out" />
+
 
         </menu>
     </item>
